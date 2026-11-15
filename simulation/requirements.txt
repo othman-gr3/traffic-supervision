@@ -1,0 +1,6 @@
+eclipse-sumo
+traci
+sumolib
+
+# Note: eclipse-sumo installs sumolib and traci as Python packages.
+# SUMO_HOME is auto-detected by runner.py and network_info.py – no manual setup needed.

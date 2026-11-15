@@ -1,0 +1,29 @@
+# Java & Maven
+backend/target/
+*.class
+*.jar
+*.war
+.m2/
+
+# Python & Pytest
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+
+# SUMO temporary outputs
+tripinfo*.xml
+*.tripinfo.xml
+
+# IDEs & OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+*.log

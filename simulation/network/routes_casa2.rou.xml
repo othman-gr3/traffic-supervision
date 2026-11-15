@@ -1,0 +1,11 @@
+<routes>
+  <vType id="car" accel="2.6" decel="4.5" sigma="0.5" tau="1.2" length="4.5" minGap="2.5" maxSpeed="13.89" emissionClass="HBEFA4/PC_petrol_Euro-4"/>
+  <route id="r0" edges="-1371159828#2 -1371159828#0"/>
+  <flow id="f0_s" type="car" route="r0" begin="0" end="1800" period="exp(0.25000)" departLane="best" departSpeed="max"/>
+  <route id="r1" edges="1371159830 1371159829 1371159828#0 1371159828#2"/>
+  <flow id="f1_s" type="car" route="r1" begin="0" end="1800" period="exp(0.25000)" departLane="best" departSpeed="max"/>
+  <route id="r2" edges="8013564#2 8013563#3 8013563#4 -1371159828#0"/>
+  <flow id="f2_r" type="car" route="r2" begin="0" end="1800" period="exp(0.05208)" departLane="best" departSpeed="max"/>
+  <route id="r3" edges="8013564#2 8013563#3 8013563#4 1371159828#2"/>
+  <flow id="f3_l" type="car" route="r3" begin="0" end="1800" period="exp(0.01736)" departLane="best" departSpeed="max"/>
+</routes>

@@ -1,0 +1,27 @@
+<routes>
+  <vType id="car" accel="2.6" decel="4.5" sigma="0.5" tau="1.2" length="4.5" minGap="2.5" maxSpeed="13.89" emissionClass="HBEFA4/PC_petrol_Euro-4"/>
+  <route id="r0" edges="E_in N_out"/>
+  <flow id="f0_r" type="car" route="r0" begin="0" end="1800" period="exp(0.01042)" departLane="best" departSpeed="max"/>
+  <route id="r1" edges="E_in W_out"/>
+  <flow id="f1_s" type="car" route="r1" begin="0" end="1800" period="exp(0.05556)" departLane="best" departSpeed="max"/>
+  <route id="r2" edges="E_in S_out"/>
+  <flow id="f2_l" type="car" route="r2" begin="0" end="1800" period="exp(0.00347)" departLane="best" departSpeed="max"/>
+  <route id="r3" edges="N_in W_out"/>
+  <flow id="f3_r" type="car" route="r3" begin="0" end="1800" period="exp(0.03750)" departLane="best" departSpeed="max"/>
+  <route id="r4" edges="N_in S_out"/>
+  <flow id="f4_s" type="car" route="r4" begin="0" end="1800" period="exp(0.20000)" departLane="best" departSpeed="max"/>
+  <route id="r5" edges="N_in E_out"/>
+  <flow id="f5_l" type="car" route="r5" begin="0" end="1800" period="exp(0.01250)" departLane="best" departSpeed="max"/>
+  <route id="r6" edges="S_in E_out"/>
+  <flow id="f6_r" type="car" route="r6" begin="0" end="1800" period="exp(0.03750)" departLane="best" departSpeed="max"/>
+  <route id="r7" edges="S_in N_out"/>
+  <flow id="f7_s" type="car" route="r7" begin="0" end="1800" period="exp(0.20000)" departLane="best" departSpeed="max"/>
+  <route id="r8" edges="S_in W_out"/>
+  <flow id="f8_l" type="car" route="r8" begin="0" end="1800" period="exp(0.01250)" departLane="best" departSpeed="max"/>
+  <route id="r9" edges="W_in S_out"/>
+  <flow id="f9_r" type="car" route="r9" begin="0" end="1800" period="exp(0.01042)" departLane="best" departSpeed="max"/>
+  <route id="r10" edges="W_in E_out"/>
+  <flow id="f10_s" type="car" route="r10" begin="0" end="1800" period="exp(0.05556)" departLane="best" departSpeed="max"/>
+  <route id="r11" edges="W_in N_out"/>
+  <flow id="f11_l" type="car" route="r11" begin="0" end="1800" period="exp(0.00347)" departLane="best" departSpeed="max"/>
+</routes>
