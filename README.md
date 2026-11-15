@@ -152,7 +152,62 @@ Benchmark réalisé sur **3 graines aléatoires (seeds)** de 1800 secondes (30 m
 
 ---
 
-## 🚀 Installation & Démarrage
+## 🖥️ Visualisation Graphique (SUMO GUI)
+
+Pour observer visuellement les véhicules circuler sur le carrefour du **Boulevard d'Anfa × Rue Jean Jaurès** et voir les feux tricolores s'adapter en direct :
+
+### 1. Voir le Contrôleur Intelligent (Smart Controller) en direct
+```powershell
+cd C:\Users\lamda\Downloads\traffic-supervision\simulation
+python runner.py --controller smart --seed 1 --gui
+```
+
+### 2. Voir le Contrôleur Classique (Fixed Time) en direct
+```powershell
+cd C:\Users\lamda\Downloads\traffic-supervision\simulation
+python runner.py --controller fixed --seed 1 --gui
+```
+
+> **💡 Astuces dans l'interface SUMO GUI :**
+> - Cliquez sur le bouton vert **Play (▶)** en haut pour démarrer la simulation.
+> - Ajustez le curseur **Delay (ms)** à environ **`50` ou `100` ms** (en haut de la fenêtre) pour que les voitures ne roulent pas trop vite et que le trafic soit fluide à regarder.
+> - Zoomez avec la molette de la souris sur le carrefour pour observer les feux tricolores (vert, orange, rouge) et les files d'attente.
+
+---
+
+## 🧪 Tests & Validation Rapides
+
+### Test A — Benchmarking Automatique (Feu Fixe vs Smart)
+Calcule les moyennes sur plusieurs simulations et génère le fichier `results_casa.csv` :
+```powershell
+cd C:\Users\lamda\Downloads\traffic-supervision\simulation
+python compare.py --seeds 3 --duration 1800 --out results_casa.csv
+```
+
+### Test B — Test du streaming WebSocket FastAPI
+Vérifie que le service FastAPI diffuse bien 1 message JSON par seconde simulée :
+```powershell
+cd C:\Users\lamda\Downloads\traffic-supervision\api
+python test_client.py
+```
+
+### Test C — Test de bout en bout via Spring Boot (API & PostgreSQL)
+Dans un terminal PowerShell :
+```powershell
+# 1. Déclencher une simulation de 20s via Spring Boot
+$body = '{"controller":"smart","seed":42,"duration":20,"stepDelay":0.1}'
+Invoke-RestMethod -Uri "http://localhost:8080/api/simulation/start" -Method POST -ContentType "application/json" -Body $body
+
+# 2. Vérifier les sessions en base
+Invoke-RestMethod -Uri "http://localhost:8080/api/runs" | ConvertTo-Json
+
+# 3. Récupérer les métriques échantillonnées pour les graphiques
+Invoke-RestMethod -Uri "http://localhost:8080/api/runs/1/metrics?sampleRate=5" | ConvertTo-Json
+```
+
+---
+
+## 🚀 Démarrage Complet des Services
 
 ### Étape 1 : Base de Données PostgreSQL
 Vérifiez que PostgreSQL écoute sur le port 5432 et créez la base :

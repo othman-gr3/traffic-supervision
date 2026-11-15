@@ -65,11 +65,11 @@ def build(net_path, tls_id, blvd_vph, side_vph, duration, out):
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
-    p.add_argument("--net", default="network/intersection.net.xml")
-    p.add_argument("--tls", default="C", help="junction id (see list_junctions: python network_info.py NET)")
+    p.add_argument("--net", default="network/casa.net.xml")
+    p.add_argument("--tls", default="cluster_12698757853_12698757855_2138359128", help="junction id")
     p.add_argument("--blvd", type=int, default=900, help="veh/h per boulevard approach")
     p.add_argument("--side", type=int, default=250, help="veh/h per side-street approach")
     p.add_argument("--duration", type=int, default=1800)
-    p.add_argument("--out", default="network/routes.rou.xml")
+    p.add_argument("--out", default="network/routes_casa2.rou.xml")
     a = p.parse_args()
     print(build(a.net, a.tls, a.blvd, a.side, a.duration, a.out), "flows written to", a.out)

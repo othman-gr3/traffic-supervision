@@ -43,9 +43,9 @@ from controllers import FixedTimeController, SmartController
 from metrics import MetricsAggregator
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-NET = os.path.join(HERE, "network", "intersection.net.xml")
-ROUTES = os.path.join(HERE, "network", "routes.rou.xml")
-TLS_ID = "C"
+NET = os.path.join(HERE, "network", "casa.net.xml")
+ROUTES = os.path.join(HERE, "network", "routes_casa2.rou.xml")
+TLS_ID = "cluster_12698757853_12698757855_2138359128"
 
 
 def run(controller="fixed", seed=1, duration=1800, gui=False, net=NET, routes=ROUTES,
