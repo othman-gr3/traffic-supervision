@@ -152,71 +152,46 @@ Benchmark réalisé sur **3 graines aléatoires (seeds)** de 1800 secondes (30 m
 
 ---
 
-## 🖥️ Visualisation Graphique (SUMO GUI)
+## 🚀 Démarrage & Exécution du Projet
+
+Vous pouvez exécuter le projet de deux manières selon votre besoin :
+- **Mode Visuel (SUMO GUI) :** pour voir directement les véhicules et les feux tricolores à l'écran.
+- **Mode Complet (Backend & Base de données) :** pour lancer les services FastAPI + Spring Boot + PostgreSQL.
+
+---
+
+### Option A — Lancer la Visualisation Graphique (SUMO GUI)
 
 Pour observer visuellement les véhicules circuler sur le carrefour du **Boulevard d'Anfa × Rue Jean Jaurès** et voir les feux tricolores s'adapter en direct :
 
-### 1. Voir le Contrôleur Intelligent (Smart Controller) en direct
 ```powershell
 cd C:\Users\lamda\Downloads\traffic-supervision\simulation
-python runner.py --controller smart --seed 1 --gui
+
+# 1. Pour voir le Contrôleur Intelligent (Smart Adaptive) :
+python runner.py --controller smart --gui
+
+# 2. Pour voir le Contrôleur Classique (Temps Fixe) :
+python runner.py --controller fixed --gui
 ```
 
-### 2. Voir le Contrôleur Classique (Fixed Time) en direct
-```powershell
-cd C:\Users\lamda\Downloads\traffic-supervision\simulation
-python runner.py --controller fixed --seed 1 --gui
-```
-
-> **💡 Astuces dans l'interface SUMO GUI :**
-> - Cliquez sur le bouton vert **Play (▶)** en haut pour démarrer la simulation.
-> - Ajustez le curseur **Delay (ms)** à environ **`50` ou `100` ms** (en haut de la fenêtre) pour que les voitures ne roulent pas trop vite et que le trafic soit fluide à regarder.
-> - Zoomez avec la molette de la souris sur le carrefour pour observer les feux tricolores (vert, orange, rouge) et les files d'attente.
+> **💡 Conseils dans la fenêtre SUMO GUI :**
+> 1. Cliquez sur le bouton vert **Play (▶)** en haut pour démarrer la circulation.
+> 2. Réglez le curseur **Delay (ms)** à environ **`50` ou `100` ms** (en haut de la fenêtre) pour ralentir l'animation et bien voir les voitures avancer.
+> 3. Zoomez sur le carrefour avec la molette de la souris pour observer les feux tricolores (vert, orange, rouge) et les files d'attente qui se résorbent.
 
 ---
 
-## 🧪 Tests & Validation Rapides
+### Option B — Démarrage Complet des Services (FastAPI + Spring Boot + PostgreSQL)
 
-### Test A — Benchmarking Automatique (Feu Fixe vs Smart)
-Calcule les moyennes sur plusieurs simulations et génère le fichier `results_casa.csv` :
-```powershell
-cd C:\Users\lamda\Downloads\traffic-supervision\simulation
-python compare.py --seeds 3 --duration 1800 --out results_casa.csv
-```
-
-### Test B — Test du streaming WebSocket FastAPI
-Vérifie que le service FastAPI diffuse bien 1 message JSON par seconde simulée :
-```powershell
-cd C:\Users\lamda\Downloads\traffic-supervision\api
-python test_client.py
-```
-
-### Test C — Test de bout en bout via Spring Boot (API & PostgreSQL)
-Dans un terminal PowerShell :
-```powershell
-# 1. Déclencher une simulation de 20s via Spring Boot
-$body = '{"controller":"smart","seed":42,"duration":20,"stepDelay":0.1}'
-Invoke-RestMethod -Uri "http://localhost:8080/api/simulation/start" -Method POST -ContentType "application/json" -Body $body
-
-# 2. Vérifier les sessions en base
-Invoke-RestMethod -Uri "http://localhost:8080/api/runs" | ConvertTo-Json
-
-# 3. Récupérer les métriques échantillonnées pour les graphiques
-Invoke-RestMethod -Uri "http://localhost:8080/api/runs/1/metrics?sampleRate=5" | ConvertTo-Json
-```
-
----
-
-## 🚀 Démarrage Complet des Services
-
-### Étape 1 : Base de Données PostgreSQL
-Vérifiez que PostgreSQL écoute sur le port 5432 et créez la base :
+#### Étape 1 : Base de Données PostgreSQL
+Vérifiez que PostgreSQL écoute sur le port 5432 et créez la base de données :
 ```sql
 CREATE DATABASE traffic_supervision;
 ```
 *(Configuration par défaut : `username: postgres`, `password: 2003` - modifiable dans `backend/src/main/resources/application.properties`).*
 
-### Étape 2 : Lancer le Service FastAPI (Port 8000)
+#### Étape 2 : Lancer le Service FastAPI (Port 8000)
+Dans un premier terminal :
 ```powershell
 cd C:\Users\lamda\Downloads\traffic-supervision\api
 python -m pip install -r requirements.txt
@@ -225,14 +200,49 @@ python main.py
 *Le service démarre sur :* `http://localhost:8000`  
 *Swagger Documentation :* `http://localhost:8000/docs`
 
-### Étape 3 : Lancer le Backend Spring Boot (Port 8080)
-Dans un autre terminal :
+#### Étape 3 : Lancer le Backend Spring Boot (Port 8080)
+Dans un deuxième terminal :
 ```powershell
 cd C:\Users\lamda\Downloads\traffic-supervision\backend
 mvn clean package -DskipTests
 java -jar target/traffic-supervision-backend-1.0.0.jar
 ```
 *Le backend démarre sur :* `http://localhost:8080`
+
+---
+
+## 🧪 Tests & Validation Rapides
+
+### Test 1 — Benchmark Comparatif Automatique (Feu Fixe vs Smart)
+Calcule les moyennes sur 3 graines (seeds) de 30 minutes chacune et génère le fichier `results_casa.csv` :
+```powershell
+cd C:\Users\lamda\Downloads\traffic-supervision\simulation
+python compare.py --seeds 3 --duration 1800 --out results_casa.csv
+```
+
+### Test 2 — Test direct du streaming WebSocket (FastAPI)
+Vérifie la réception des trames JSON seconde par seconde :
+```powershell
+cd C:\Users\lamda\Downloads\traffic-supervision\api
+python test_client.py
+```
+
+### Test 3 — Test de bout en bout (Spring Boot + PostgreSQL)
+Dans un terminal PowerShell :
+```powershell
+# 1. Démarrer une simulation de 20s via Spring Boot
+$body = '{"controller":"smart","seed":42,"duration":20,"stepDelay":0.1}'
+Invoke-RestMethod -Uri "http://localhost:8080/api/simulation/start" -Method POST -ContentType "application/json" -Body $body
+
+# 2. Consulter l'état en direct
+Invoke-RestMethod -Uri "http://localhost:8080/api/simulation/status" | ConvertTo-Json
+
+# 3. Vérifier les sessions enregistrées en base PostgreSQL
+Invoke-RestMethod -Uri "http://localhost:8080/api/runs" | ConvertTo-Json
+
+# 4. Récupérer les métriques échantillonnées pour affichage des graphiques
+Invoke-RestMethod -Uri "http://localhost:8080/api/runs/1/metrics?sampleRate=5" | ConvertTo-Json
+```
 
 ---
 
